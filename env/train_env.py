@@ -52,7 +52,12 @@ class CtfEnv(gym.Env):
         self.sock.sendall(action_packet.serialize())
 
         points = self.receive_board_packet()
+        # calculate the points diff
         reward = 0
+        if self.point < points[0]:
+            reward += 100
+        if self.enemy_point < points[1]:
+            reward -= 100
         done = False
 
         return self.state, reward, done, False, {}
